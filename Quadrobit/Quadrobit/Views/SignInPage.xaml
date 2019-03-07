@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Quadrobit.Views.SignInPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    prism:ViewModelLocator.AutowireViewModel="True">
+    <Grid Padding="20,50" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label HorizontalOptions="EndAndExpand" Text="Username" />
+        <Entry
+            Grid.Column="1"
+            HorizontalOptions="FillAndExpand"
+            Keyboard="Email"
+            Text="{Binding Username}" />
+        <Label
+            Grid.Row="1"
+            HorizontalOptions="EndAndExpand"
+            Text="Password" />
+        <Entry
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalOptions="FillAndExpand"
+            IsPassword="True"
+            Text="{Binding Password}" />
+        <Button
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Command="{Binding SignInCommand}"
+            HorizontalOptions="Center"
+            Text="Sign In" />
+    </Grid>
+</ContentPage>

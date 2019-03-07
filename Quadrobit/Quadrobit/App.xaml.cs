@@ -1,17 +1,22 @@
 ﻿using System;
+using Prism;
+using Prism.Ioc;
+using Prism.Unity;
+using Quadrobit.Abstractions;
+using Quadrobit.Repositories;
+using Quadrobit.Services;
+using Quadrobit.ViewModels;
+using Quadrobit.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Quadrobit
 {
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
-        public App()
+         public App(IPlatformInitializer initializer = null) : base(initializer)
         {
-            InitializeComponent();
-
-            MainPage = new MainPage();
         }
 
         protected override void OnStart()
@@ -27,6 +32,24 @@ namespace Quadrobit
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+         protected override void OnInitialized()
+        {
+            InitializeComponent();
+
+                NavigationService.NavigateAsync(new Uri(
+                    $"http://quadrobit.ingweland.com/{nameof(SignInPage)}",
+                    UriKind.Absolute));
+        }
+
+         protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterSingleton<IDataRepository, DataRepository>();
+            containerRegistry.RegisterSingleton<IApiService, ApiService>();
+
+            containerRegistry.RegisterForNavigation<SignInPage, SignInPageViewModel>();
+            containerRegistry.RegisterForNavigation<InternalPage, InternalPageViewModel>();
         }
     }
 }

@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Quadrobit.Views.InternalPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:abstractions="clr-namespace:SegmentedControl.FormsPlugin.Abstractions;assembly=SegmentedControl.FormsPlugin.Abstractions"
+    xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+    xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+    prism:ViewModelLocator.AutowireViewModel="True">
+    <Grid Padding="0, 20, 0, 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            IsVisible="{Binding FirstViewIsVisible}"
+            Orientation="Horizontal"
+            VerticalOptions="Center">
+            <Label Text="Login credentials:" />
+            <Label Text="{Binding SignInCredentials.Username}" />
+            <Label Text="{Binding SignInCredentials.Password}" />
+        </StackLayout>
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            IsVisible="{Binding SecondViewIsVisible}"
+            Orientation="Horizontal"
+            VerticalOptions="Center">
+            <Button
+                Margin="30,0" Clicked="addEntryBtn_OnClicked"
+                Command="{Binding AddEntryCommand}"
+                HorizontalOptions="CenterAndExpand"
+                Text="Add entry" />
+            <Button
+                Margin="30,0" Clicked="removeEntryBtn_OnClicked"
+                Command="{Binding RemoveEntryCommand}"
+                HorizontalOptions="CenterAndExpand"
+                Text="Remove entry" />
+        </StackLayout>
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            IsVisible="{Binding ThirdViewIsVisible}"
+            Orientation="Horizontal"
+            VerticalOptions="Center">
+            <Button
+                Command="{Binding LogoutCommand}"
+                HorizontalOptions="CenterAndExpand"
+                Text="Logout" />
+        </StackLayout>
+        <abstractions:SegmentedControl Grid.Row="1">
+            <abstractions:SegmentedControl.Behaviors>
+                <behaviors:EventToCommandBehavior
+                    Command="{Binding ChangeViewCommand}"
+                    EventArgsParameterPath="NewValue"
+                    EventName="ValueChanged" />
+            </abstractions:SegmentedControl.Behaviors>
+            <abstractions:SegmentedControl.Children>
+                <abstractions:SegmentedControlOption Text="Login credentials" />
+                <abstractions:SegmentedControlOption Text="Data" />
+                <abstractions:SegmentedControlOption Text="Logout" />
+            </abstractions:SegmentedControl.Children>
+        </abstractions:SegmentedControl>
+        <ListView
+            Grid.Row="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+            CachingStrategy="RecycleElement"
+            HasUnevenRows="False" x:Name="DataEntriesList"
+            ItemsSource="{Binding DataEntries}"
+            RowHeight="60">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Title}" />
+                            <Label
+                                Grid.Row="1"
+                                FontSize="15"
+                                Text="{Binding Subtitle}"
+                                TextColor="#cccccc" />
+                            <Label
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                FontAttributes="Italic"
+                                FontSize="15"
+                                Text="{Binding Date}"
+                                VerticalOptions="CenterAndExpand" />
+                        </Grid>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>

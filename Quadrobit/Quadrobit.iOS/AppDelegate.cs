@@ -1,9 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region Author
+
+// Author ILYA GOLOVACH (aka IngweLand)
+// http://ingweland.com
+// ingweland@gmail.com
+// Created: 07 03 2019
+
+#endregion
+
+#region
 
 using Foundation;
+using Prism;
+using Prism.Ioc;
+using Quadrobit.Abstractions;
+using Quadrobit.iOS.Services;
+using SegmentedControl.FormsPlugin.iOS;
 using UIKit;
+
+#endregion
 
 namespace Quadrobit.iOS
 {
@@ -22,10 +36,19 @@ namespace Quadrobit.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+            Xamarin.Forms.Forms.Init();
+            SegmentedControlRenderer.Init();
+            LoadApplication(new App(new IosPlatformInitializer()));
 
             return base.FinishedLaunching(app, options);
+        }
+    }
+
+    class IosPlatformInitializer : IPlatformInitializer
+    {
+        public void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterSingleton<ISqliteConnectionService, IosSqliteConnectionService>();
         }
     }
 }
